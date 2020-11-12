@@ -65,7 +65,6 @@ sp_dboption $SYBASE_DB, "select into", true
 go
 exec sp_dboption $SYBASE_DB,'select into/bulkcopy', true
 go
-
 EOSQL
 
 /opt/sybase/OCS-16_0/bin/isql -Usa -PmyPassword -SMYSYBASE -i"./init1.sql"
@@ -103,7 +102,7 @@ go
 EOSQL
 /opt/sybase/OCS-16_0/bin/isql -Usa -PmyPassword -SMYSYBASE -i"./init3.sql"
 
-echo =============== CREATING TABLES==========================
+echo =============== CREATING TABLES & grant access==========================
 cat <<-EOSQL > init4.sql
 use $SYBASE_DB
 go
@@ -123,7 +122,24 @@ CREATE TABLE ORDERS ( O_ORDERKEY INTEGER NOT NULL, O_CUSTKEY INTEGER NOT NULL, O
 go
 CREATE TABLE LINEITEM ( L_ORDERKEY INTEGER NOT NULL, L_PARTKEY INTEGER NOT NULL, L_SUPPKEY INTEGER NOT NULL, L_LINENUMBER INTEGER NOT NULL, L_QUANTITY DECIMAL(15,2) NOT NULL, L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL, L_DISCOUNT DECIMAL(15,2) NOT NULL, L_TAX DECIMAL(15,2) NOT NULL, L_RETURNFLAG CHAR(1) NOT NULL, L_LINESTATUS CHAR(1) NOT NULL, L_SHIPDATE DATE NOT NULL, L_COMMITDATE DATE NOT NULL, L_RECEIPTDATE DATE NOT NULL, L_SHIPINSTRUCT CHAR(25) NOT NULL, L_SHIPMODE CHAR(10) NOT NULL, L_COMMENT VARCHAR(44) NOT NULL)
 go
-
+grant all on NATION to TPCH
+go
+grant all on REGION to TPCH
+go
+grant all on PART to TPCH
+go
+grant all on SUPPLIER to TPCH
+go
+grant all on PARTSUPP to TPCH
+go
+grant all on CUSTOMER to TPCH
+go
+grant all on ORDERS to TPCH
+go
+grant all on LINEITEM to TPCH
+go
+commit
+go
 EOSQL
 /opt/sybase/OCS-16_0/bin/isql -Usa -PmyPassword -SMYSYBASE -i"./init4.sql"
 echo =============== Load Data from tbl==========================
